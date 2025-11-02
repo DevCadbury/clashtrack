@@ -11,6 +11,7 @@ const SHEET_API =
 
 const client = new Client();
 let cache = { lastUpdated: null, data: [] };
+let loginSuccess = false;
 
 // Helper: normalize player tag
 function normalizePlayerTag(tag) {
@@ -180,7 +181,9 @@ app.get("/api/players", async (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("✅ COC Clan Checker API is running.");
+  const loginStatus = loginSuccess ? 'Successful' : 'Failed';
+  const lastSync = cache.lastUpdated ? new Date(cache.lastUpdated).toLocaleString() : 'Never';
+  res.send(`✅ COC Clan Checker API is running.\nLogin: ${loginStatus}\nLast Sync: ${lastSync}`);
 });
 
 // Initialize client
@@ -188,9 +191,11 @@ app.get("/", (req, res) => {
   try {
     await client.login({ email: process.env.COC_EMAIL, password: process.env.COC_PASSWORD });
     console.log("✅ Logged in to Clash of Clans API");
+    loginSuccess = true;
     await updateData();
   } catch (err) {
     console.error("❌ Failed to login:", err.message);
+    loginSuccess = false;
   }
 })();
 
