@@ -1,5 +1,7 @@
 import express from "express";
 import { Client } from 'clashofclans.js';
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const PORT = 3001;
