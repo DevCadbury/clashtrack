@@ -66,6 +66,7 @@ async function fetchPlayersInBatches(players, batchSize = 15, delayMs = 400) {
           ...player,
           currentClanName,
           currentClanTag,
+          currentTownHall: cocData?.townHallLevel || null,
           isInAssignedClan,
         };
       })
